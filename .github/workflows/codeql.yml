@@ -109,7 +109,7 @@ jobs:
     - name: Send Slack Notification
       run: |
           RESULTS=$(cat results.txt)
-          SLACK_WEBHOOK_URL="https://hooks.slack.com/services/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"  
+          SLACK_WEBHOOK_URL="https://hooks.slack.com/services/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"  
           curl -X POST -H 'Content-type: application/json' --data '{
             "text": "🚨 *CodeQL Security Alert!*\n\n'"$RESULTS"'"
           }' "$SLACK_WEBHOOK_URL"
