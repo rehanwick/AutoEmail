@@ -96,3 +96,13 @@ jobs:
       uses: github/codeql-action/analyze@v3
       with:
         category: "/language:${{matrix.language}}"
+
+    - name: Send Slack Notification
+      if: always()
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      run: |
+        RESULTS=$(cat results.txt)
+        curl -X POST -H 'Content-type: application/json' --data '{
+        "text": "🚨 *CodeQL Security Alert!*\n\n'"$RESULTS"'"
+        }' https://hooks.slack.com/services/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
