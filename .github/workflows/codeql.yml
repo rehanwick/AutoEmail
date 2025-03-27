@@ -125,5 +125,5 @@ jobs:
           body: 'Attached is the latest CodeQL scan report.'
           to: 'rihan.shaikh@zinnia.com'
           from: 'rs0327884@gmail.com'
-          attachments: "codeql-report.json"
+          attachments: "results.txt"
 
