@@ -104,20 +104,6 @@ jobs:
            else
              echo "CodeQL results file missing. Skipping alert." > results.txt
            fi
-    
-    - name: Remove Existing mailsend-go
-      run: rm -f /usr/local/bin/mailsend-go
-
-    - name: Install mailsend-go
-      run: |
-        curl -L -o mailsend-go https://github.com/muquit/mailsend-go/releases/latest/download/mailsend-go-linux-amd64
-        chmod +x mailsend-go
-        sudo mv mailsend-go /usr/local/bin/mailsend-go
-
-    - name: Verify mailsend-go
-      run: |
-        /usr/local/bin/mailsend-go -help
-
 
     - name: Send Slack Notification
       run: |
@@ -126,17 +112,18 @@ jobs:
           curl -X POST -H 'Content-type: application/json' --data '{
             "text": "🚨 *CodeQL Security Alert!*\n\n'"$RESULTS"'"
           }' "$SLACK_WEBHOOK_URL"
-    - name: Send Email Notification
-      env:
-          SMTP_SERVER: "smtp.gmail.com"  # Change this for Outlook, Yahoo, or custom SMTP
-          SMTP_PORT: "587"
-          SMTP_USER: "rs0327884@gmail.com"  # Replace with sender email
-          SMTP_PASS: "qsog cwmc bkub kyyj"  # Replace with sender email app password
-          TO_EMAIL: "rihan.shaikh@zinnia.com"  # Replace with the recipient
-          SUBJECT: "🚨 CodeScanner Security Alert"
-      run: |
-          RESULTS=$(cat results.txt)
-          mailsend-go -smtp $SMTP_SERVER -port $SMTP_PORT -starttls \
-            -auth -user $SMTP_USER -pass $SMTP_PASS \
-            -from $SMTP_USER -to $TO_EMAIL \
-            -sub "$SUBJECT" -msg-body - <<< "$RESULTS"
+          
+    - name: Send CodeQL Report via Email
+      uses: dawidd6/action-send-mail@v3.12.0
+      with:
+          server_address: 'smtp.office365.com'
+          server_port: 587
+          secure: false  # Use false for TLS (Outlook requires TLS)
+          username: 'rihan.shaikh@zinnia.com'
+          password: 'International$1'
+          subject: '🚨Code Scan Report for ${{ github.repository }}'
+          body: 'Attached is the latest CodeQL scan report.'
+          to: 'Mahesh.Yadav@zinnia.com'
+          from: 'rihan.shaikh@zinnia.com'
+          attachments: "codeql-report.json"
+
