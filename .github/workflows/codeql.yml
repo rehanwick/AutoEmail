@@ -113,3 +113,17 @@ jobs:
           curl -X POST -H 'Content-type: application/json' --data '{
             "text": "🚨 *CodeQL Security Alert!*\n\n'"$RESULTS"'"
           }' "$SLACK_WEBHOOK_URL"
+    - name: Send Email Notification
+      env:
+          SMTP_SERVER: "smtp.gmail.com"  # Change this for Outlook, Yahoo, or custom SMTP
+          SMTP_PORT: "587"
+          SMTP_USER: "rs0327884@gmail.com"  # Replace with sender email
+          SMTP_PASS: "qsog cwmc bkub kyyj"  # Replace with sender email app password
+          TO_EMAIL: "rihan.shaikh@zinnia.com"  # Replace with the recipient
+          SUBJECT: "🚨 CodeScanner Security Alert"
+      run: |
+          RESULTS=$(cat results.txt)
+          mailsend-go -smtp $SMTP_SERVER -port $SMTP_PORT -starttls \
+            -auth -user $SMTP_USER -pass $SMTP_PASS \
+            -from $SMTP_USER -to $TO_EMAIL \
+            -sub "$SUBJECT" -msg-body - <<< "$RESULTS"
