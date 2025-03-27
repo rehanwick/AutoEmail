@@ -99,11 +99,12 @@ jobs:
 
     - name: Extract CodeQL Results
       run: |
-           if [ -f "codeql-results.sarif" ]; then
-             jq -r '.runs[].results[].message.text' codeql-results.sarif > results.txt || echo "No issues found" > results.txt
-           else
-             echo "CodeQL results file missing. Skipping alert." > results.txt
-           fi
+        if [ -f "codeql-results.sarif" ]; then
+          jq -r '.runs[].results[].message.text' codeql-results.sarif > results.txt || echo "No issues found" > results.txt
+        else
+          echo "CodeQL scan did not generate a results file!" > results.txt
+        fi
+
 
     - name: Send Slack Notification
       run: |
