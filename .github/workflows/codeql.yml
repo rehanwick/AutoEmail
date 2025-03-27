@@ -105,11 +105,18 @@ jobs:
              echo "CodeQL results file missing. Skipping alert." > results.txt
            fi
     
+    - name: Remove Existing mailsend-go
+      run: rm -f /usr/local/bin/mailsend-go
+
     - name: Install mailsend-go
       run: |
         curl -L -o mailsend-go https://github.com/muquit/mailsend-go/releases/latest/download/mailsend-go-linux-amd64
         chmod +x mailsend-go
         sudo mv mailsend-go /usr/local/bin/mailsend-go
+
+    - name: Verify mailsend-go
+      run: |
+        /usr/local/bin/mailsend-go -help
 
 
     - name: Send Slack Notification
