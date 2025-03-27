@@ -116,14 +116,14 @@ jobs:
     - name: Send CodeQL Report via Email
       uses: dawidd6/action-send-mail@v3.12.0
       with:
-          server_address: 'smtp.office365.com'
+          server_address: 'smtp.gmail.com'
           server_port: 587
           secure: false  # Use false for TLS (Outlook requires TLS)
-          username: 'rihan.shaikh@zinnia.com'
-          password: 'International$1'
+          username: 'rs0327884@gmail.com'
+          password: 'qsog cwmc bkub kyyj'
           subject: '🚨Code Scan Report for ${{ github.repository }}'
           body: 'Attached is the latest CodeQL scan report.'
-          to: 'Mahesh.Yadav@zinnia.com'
-          from: 'rihan.shaikh@zinnia.com'
+          to: 'rihan.shaikh@zinnia.com'
+          from: 'rs0327884@gmail.com'
           attachments: "codeql-report.json"
 
